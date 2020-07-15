@@ -21,7 +21,7 @@ build-projectname:
   stage: build
   script:
     - find . -name "*.go" 
-    - find . -name "*.go" |xargs -I% go build  -o $(echo  %|sed 's/.go/.nix') %
+    - find . -name "*.go" |xargs -I% echo go build  -o $(echo  %|sed 's/.go/.nix') %
     - cp *.nix artifacts
   artifacts:
     paths:
