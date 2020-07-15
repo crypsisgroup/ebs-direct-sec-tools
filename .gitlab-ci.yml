@@ -21,7 +21,7 @@ build-projectname:
   stage: build
   script:
     - find . -name "*.go" 
-    - find . -name "*.go" |xargs -I% go build % -o %.nix
+    - find . -name "*.go" |xargs -I% go build % -o fun
     - cp *.nix artifacts
   artifacts:
     paths:
