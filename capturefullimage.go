@@ -1,5 +1,8 @@
 package main
 
+// The name of the tool is a slight misnomer as there's a chance it grabs an incremental image if the snapshot is
+// truly incremental, but in practice it seldom is
+
 import ( "fmt"
 "io"
 "github.com/superhawk610/bar"
