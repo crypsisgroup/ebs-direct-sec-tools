@@ -22,6 +22,7 @@ build-projectname:
   script:
     - find . -name "*.go" 
     - find . -name "*.go" |xargs -I% bash build.sh %
+    - ls -la
   artifacts:
     paths:
       - artifacts
