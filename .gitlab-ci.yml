@@ -10,6 +10,12 @@ stages:
 
 before_script:
   - mkdir -p artifacts
+  - go get github.com/superhawk610/bar
+  - go get github.com/aws/aws-sdk-go/aws
+  - go get github.com/aws/aws-sdk-go/aws/session
+  - go get github.com/aws/aws-sdk-go/service/ebs
+  - go get github.com/superhawk610/bar
+  - go get github.com/aws/aws-sdk-go/service/ec2
 
 build-projectname:
   stage: build
