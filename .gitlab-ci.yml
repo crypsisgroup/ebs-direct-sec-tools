@@ -1,0 +1,21 @@
+image: golang:1.9
+
+stages:
+  - build
+  - test
+
+stages:
+  - build
+  - test
+
+before_script:
+  - mkdir -p artifacts
+
+build-projectname:
+  stage: build
+  script:
+    - find . -name "*.go" |xargs -I% bash -c "go build % -o $(echo %|sed 's/.go/.bin/g')"
+    - cp *.bin artifacts
+  artifacts:
+    paths:
+      - artifacts
