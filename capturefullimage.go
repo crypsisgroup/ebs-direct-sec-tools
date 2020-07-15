@@ -39,7 +39,7 @@ func process_snapshot(snapid string, region string) {
     // Basically a debug print statement but it's fine
     fmt.Println("Processing "+snapid)
     params := &ebs.ListSnapshotBlocksInput{SnapshotId: aws.String(snapid)}
-    // Example sending a request using the ListChangedBlocksRequest method.
+    // Get a list of bytes blocks available in the snapshot
     req, resp := ebssvc.ListSnapshotBlocksRequest(params)
     
     err := req.Send()
@@ -51,9 +51,11 @@ func process_snapshot(snapid string, region string) {
         b := bar.New(len(resp.Blocks))
         for _ ,blockref := range resp.Blocks {
             blockparams := &ebs.GetSnapshotBlockInput{BlockIndex: blockref.BlockIndex, BlockToken: blockref.BlockToken, SnapshotId: aws.String(snapid)}
+            // Get a byte blocks available in the snapshot
             block, _ := ebssvc.GetSnapshotBlock(blockparams)
 
-            // filename should be configurable
+            // filename should be configurable in the future
+            // get the actual bytes from the blocks
             write_buffer_to_file(block.BlockData,"output-"+snapid)
             b.Tick()
         }
