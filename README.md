@@ -16,3 +16,5 @@ Crypsis PR work around this is pending.
 ## capturefullimage.go
 
 A bit of a misnomer, this tool won't capture a full image but rather a snapshot. Run with ./capturefullimage -id snapshotidhere -region regionhere, e.g. ./capturefullimage -id snap-aab1lan2a -region us-east-1 and it will output to output-snap-aab1lan2a to the current directory. This was meant to be a proof of concept to set expectations around the API and work on the API.
+
+You probably can capture an image, however, if you can see the snapshots an AMI is made of and call ebs:* against it.
