@@ -32,4 +32,5 @@ test-data:
    stage: test
    image: cytopia/golint
    script:
+    - find "*.go" -type f
     - golint *.go
