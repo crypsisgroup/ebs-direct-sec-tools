@@ -18,7 +18,7 @@ before_script:
   - go get github.com/superhawk610/bar
   - go get github.com/aws/aws-sdk-go/service/ec2
 
-build-projectname:
+build-binaries:
   stage: build
   script:
     - find . -name "*.go" 
@@ -27,3 +27,9 @@ build-projectname:
   artifacts:
     paths:
       - artifacts
+
+test-data:
+   stage: test
+   image: cytopia/golint
+   script:
+    - golint *.go
