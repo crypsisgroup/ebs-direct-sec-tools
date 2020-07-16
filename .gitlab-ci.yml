@@ -33,4 +33,4 @@ test-data:
    image: cytopia/golint
    script:
     - find "*.go" -type f
-    - golint *.go
+    - golint capturefullimage.go
