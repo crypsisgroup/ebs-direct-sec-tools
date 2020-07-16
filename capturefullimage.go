@@ -14,7 +14,7 @@ import ( "fmt"
 "github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func write_buffer_to_file(buffer io.ReadCloser,filename string) {
+func writeBufferToFile(buffer io.ReadCloser,filename string) {
         // write the whole body at once
         // append flags so it doesn't write 512K chunks over one another
         outFile, err :=  os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
@@ -26,7 +26,7 @@ func write_buffer_to_file(buffer io.ReadCloser,filename string) {
         }
 }
 
-func process_snapshot(snapid string, region string) {
+func processSnapshot(snapid string, region string) {
     //I would love to be able to multithread this
     sess := session.Must(session.NewSession(&aws.Config{
         MaxRetries: aws.Int(3),
@@ -56,7 +56,7 @@ func process_snapshot(snapid string, region string) {
 
             // filename should be configurable in the future
             // get the actual bytes from the blocks
-            write_buffer_to_file(block.BlockData,"output-"+snapid)
+            writeBufferToFile(block.BlockData,"output-"+snapid)
             b.Tick()
         }
         b.Done()
@@ -129,7 +129,7 @@ func main() {
     // but this is so I can build it out towards pentesting and it's a small one
     // time performance cost
     if snapFound {
-        process_snapshot(*snapid, *region)
+        processSnapshot(*snapid, *region)
     } else {
         fmt.Println("Couldn't locate the selected snapshot")
     }
