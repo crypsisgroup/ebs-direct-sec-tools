@@ -8,19 +8,17 @@ stages:
   - build
   - test
 
-before_script:
-  - mkdir -p artifacts
-  - go get github.com/superhawk610/bar
-  - go get github.com/aws/aws-sdk-go/aws
-  - go get github.com/aws/aws-sdk-go/aws/session
-  - go get github.com/mattn/go-isatty
-  - go get github.com/aws/aws-sdk-go/service/ebs
-  - go get github.com/superhawk610/bar
-  - go get github.com/aws/aws-sdk-go/service/ec2
-
 build-binaries:
   stage: build
   script:
+    - mkdir -p artifacts
+    - go get github.com/superhawk610/bar
+    - go get github.com/aws/aws-sdk-go/aws
+    - go get github.com/aws/aws-sdk-go/aws/session
+    - go get github.com/mattn/go-isatty
+    - go get github.com/aws/aws-sdk-go/service/ebs
+    - go get github.com/superhawk610/bar
+    - go get github.com/aws/aws-sdk-go/service/ec2
     - find . -name "*.go" 
     - find . -name "*.go" |xargs -I% bash build.sh %
     - ls -la
@@ -32,4 +30,4 @@ test-data:
   stage: test
   script:
     - go get -u github.com/golang/lint/golint
-    - find / -name golint
+    - /go/bin/golint *.go
