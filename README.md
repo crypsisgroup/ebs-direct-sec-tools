@@ -10,3 +10,9 @@ These APIs are being studied for forensic implications, offensive implications, 
 - Differentiating two backups during a compromise period to determine changed bytes
 
 Crypsis PR work around this is pending.
+
+# Individual Tools
+
+## capturefullimage.go
+
+A bit of a misnomer, this tool won't capture a full image but rather a snapshot. Run with ./capturefullimage -id snapshotidhere -region regionhere, e.g. ./capturefullimage -id snap-aab1lan2a -region us-east-1 and it will output to output-snap-aab1lan2a to the current directory. This was meant to be a proof of concept to set expectations around the API and work on the API.
