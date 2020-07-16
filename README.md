@@ -11,6 +11,10 @@ These APIs are being studied for forensic implications, offensive implications, 
 
 Crypsis PR work around this is pending.
 
+# Pricing
+
+When people hear "it's probably a B2B API because it's so expensive" I should note it's $0.006/MB as far as I can tell. This is likely more affordable than other solutions.
+
 # Individual Tools
 
 ## capturefullimage.go
