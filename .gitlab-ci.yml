@@ -29,8 +29,7 @@ build-binaries:
       - artifacts
 
 test-data:
-   stage: test
-   image: cytopia/golint
-   script:
-    - find "*.go" -type f
-    - golint capturefullimage.go
+  stage: test
+  script:
+    - go get -u github.com/golang/lint/golint
+    - find / -name golint
