@@ -1,8 +1,5 @@
 package main
 
-// The name of the tool is a slight misnomer as there's a chance it grabs an incremental image if the snapshot is
-// truly incremental, but in practice it seldom is
-
 import ( "fmt"
 "io"
 "github.com/superhawk610/bar"
@@ -14,8 +11,8 @@ import ( "fmt"
 "github.com/aws/aws-sdk-go/service/ec2"
 )
 
-func writeBufferToFile(buffer io.ReadCloser,filename string) {
-        // write the whole body at once
+func write_buffer_to_file(buffer io.ReadCloser,filename string) {
+        // TODO write the whole body at once
         // append flags so it doesn't write 512K chunks over one another
         outFile, err :=  os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
         // handle err
@@ -26,7 +23,7 @@ func writeBufferToFile(buffer io.ReadCloser,filename string) {
         }
 }
 
-func processSnapshot(snapid string, region string) {
+func process_snapshot(snapid string, region string) {
     //I would love to be able to multithread this
     sess := session.Must(session.NewSession(&aws.Config{
         MaxRetries: aws.Int(3),
@@ -39,7 +36,7 @@ func processSnapshot(snapid string, region string) {
     // Basically a debug print statement but it's fine
     fmt.Println("Processing "+snapid)
     params := &ebs.ListSnapshotBlocksInput{SnapshotId: aws.String(snapid)}
-    // Get a list of bytes blocks available in the snapshot
+    // Example sending a request using the ListChangedBlocksRequest method.
     req, resp := ebssvc.ListSnapshotBlocksRequest(params)
     
     err := req.Send()
@@ -50,13 +47,13 @@ func processSnapshot(snapid string, region string) {
         fmt.Println("Retrieving block data")
         b := bar.New(len(resp.Blocks))
         for _ ,blockref := range resp.Blocks {
+            // prepare our request
             blockparams := &ebs.GetSnapshotBlockInput{BlockIndex: blockref.BlockIndex, BlockToken: blockref.BlockToken, SnapshotId: aws.String(snapid)}
-            // Get a byte blocks available in the snapshot
+            // ask for the blocks
             block, _ := ebssvc.GetSnapshotBlock(blockparams)
 
-            // filename should be configurable in the future
-            // get the actual bytes from the blocks
-            writeBufferToFile(block.BlockData,"output-"+snapid)
+            // TODO filename should be configurable in the future - 
+            write_buffer_to_file(block.BlockData,"output-"+snapid)
             b.Tick()
         }
         b.Done()
@@ -129,7 +126,7 @@ func main() {
     // but this is so I can build it out towards pentesting and it's a small one
     // time performance cost
     if snapFound {
-        processSnapshot(*snapid, *region)
+        process_snapshot(*snapid, *region)
     } else {
         fmt.Println("Couldn't locate the selected snapshot")
     }
