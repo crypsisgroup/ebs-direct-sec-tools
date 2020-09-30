@@ -1,24 +1,39 @@
-# EBS Direct API Tooling
+# EBS Direct API Security Tooling
 
-EBS Direct APIs are designed to allow you to upload, download and diff EBS *snapshots*. AWS seems to brand them for [other IaaS/SaaS providers](https://aws.amazon.com/about-aws/whats-new/2019/12/aws-launches-ebs-direct-apis-that-provide-read-access-to-ebs-snapshot-data-enabling-backup-providers-to-achieve-faster-backups-of-ebs-volumes-at-lower-costs/) despite how affordable they are, so they seem to have been largely overlooked. EBS snapshots are designed to be incremental, but:
-- AMIs are compromised of EBS snapshots
-- EBS snapshots commonly become non-incremental where you'd think they would be incremental, e.g. cross-account
+Fun tools around the EBS Direct API. If you find this interesting, give it a star, repost the blog, etc so I know whether I should do more! I've yet to ask that of other stuff I've open sourced or blogged about.
 
-These APIs are being studied for forensic implications, offensive implications, and defensive implications. Use cases include:
-- Scanning incremental releases of images for secrets for CI/CD
-- Scanning incremental or mass releases for secrets for offensive purposes
-- Differentiating two backups during a compromise period to determine changed bytes
+Please be gentle about my code. My time is limited and my worst Go code is faster than my best Ruby code so I just went for it.
 
-Crypsis PR work around this is pending.
+**All utilities have a release of latest for AMD64 Linux, Mac and Windows**
 
-# Pricing
+## DownloadSnap 
 
-When people hear "it's probably a B2B API because it's so expensive" I should note it's $0.006/MB as far as I can tell. This is likely more affordable than other solutions.
+This is a simple Go utility that can be used to download snapshots – This exists elsewhere but was written in Go for both performance and portability.
 
-# Individual Tools
+**NOTE: Two months ago during the course of this research AWS Labs came out with development code for “coldsnap” which does this.** The DownloadSnap code is still being made available as historical/example code. Good to see they also came out with it in a compilable language :smile:
 
-## capturefullimage.go
+## DumpBlocks 
 
-A bit of a misnomer, this tool won't capture a full image but rather a snapshot. Run with ./capturefullimage -id snapshotidhere -region regionhere, e.g. ./capturefullimage -id snap-aab1lan2a -region us-east-1 and it will output to output-snap-aab1lan2a to the current directory. This was meant to be a proof of concept to set expectations around the API and work on the API.
+Go utility to dump snapshot fragments in a folder based on the changed blocks. For instance, if 40MB continuous changes, then there’s another 60MB later on the disk that changed, it creates 40MB and 60MB files. This is useful for contextualizing interesting fragments.
 
-You probably can capture an image, however, if you can see the snapshots an AMI is made of and call ebs:* against it.
+```
+
+```
+
+## ScanSecrets 
+
+Go utility augmenting Bishop Fox’s Dufflebag rules match function to scan a snapshot for potential hardcoded secrets. Amongst other things, this could be used to help enforce instance roles over hardcoded keys in a CI/CD environment.
+
+```
+
+```
+
+## DiffSecrets
+
+Go utility augmenting Bishop Fox’s Dufflebag rules and match function to scan two different snapshots for potential hardcoded secrets. Amongst other things, this could be used to help enforce instance roles over hardcoded keys in a CI/CD environment.
+
+The ScanSecrets tool, but diffs two snapshots. This is a pretty niche but really valuable API (and, in my opinion, fun to play with). In testing this was able to sniff out hardcoded keys and backdoor /etc/shadow passwords left over after basic iterative AMI changes in seconds. On a home laptop on home WiFi.
+
+```
+
+```
