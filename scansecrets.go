@@ -185,7 +185,7 @@ func write_and_scan_buffer(buffer io.ReadCloser,filename string, bufferwrite boo
             fmt.Printf("\nMatch type: %v\n----------\n", outputs)
         }
         if bufferwrite == true { 
-            outFile, err :=  os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
+            outFile, _ :=  os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
             // handle err
             defer outFile.Close()        
             _, wterr := outFile.Write(body)
