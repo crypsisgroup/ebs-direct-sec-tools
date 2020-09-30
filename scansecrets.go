@@ -176,7 +176,7 @@ func checkContentsRegex(b []byte) []string {
 	return regex_results
 }
 
-func write_and_scan_buffer(buffer io.ReadCloser,filename string) {
+func write_and_scan_buffer(buffer io.ReadCloser,filename string, bufferwrite bool) {
         // write the whole body at once
         // append flags so it doesn't write 512K chunks over one another
         body, err := ioutil.ReadAll(buffer)
@@ -184,16 +184,18 @@ func write_and_scan_buffer(buffer io.ReadCloser,filename string) {
         if len(outputs) > 0 {
             fmt.Printf("\nMatch type: %v\n----------\n", outputs)
         }
-        outFile, err :=  os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
-        // handle err
-        defer outFile.Close()        
-        _, wterr := outFile.Write(body)
-        if wterr != nil {
-           fmt.Println(err)
+        if bufferwrite == true { 
+            outFile, err :=  os.OpenFile(filename, os.O_RDWR|os.O_APPEND|os.O_CREATE, 0660);
+            // handle err
+            defer outFile.Close()        
+            _, wterr := outFile.Write(body)
+            if wterr != nil {
+            fmt.Println(err)
+            }
         }
 }
 
-func process_snapshot(snapid string, wantsbar bool, region string) {
+func process_snapshot(snapid string, wantsbar bool, region string, bufferwrite bool) {
     //I would love to be able to multithread this
     sess := session.Must(session.NewSession(&aws.Config{
         MaxRetries: aws.Int(3),
@@ -219,7 +221,7 @@ func process_snapshot(snapid string, wantsbar bool, region string) {
             blockparams := &ebs.GetSnapshotBlockInput{BlockIndex: blockref.BlockIndex, BlockToken: blockref.BlockToken, SnapshotId: aws.String(snapid)}
             block, _ := ebssvc.GetSnapshotBlock(blockparams)
             // filename should be configurable
-            write_and_scan_buffer(block.BlockData,"output-"+snapid)
+            write_and_scan_buffer(block.BlockData,"output-"+snapid, bufferwrite)
             if wantsbar == true {
                 b.Tick()
             }
