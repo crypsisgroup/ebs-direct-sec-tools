@@ -23,7 +23,7 @@ Note: Some of these may be considered essential in some cases, however my priori
 
 This is a simple Go utility that can be used to download snapshots – This exists elsewhere but was written in Go for both performance and portability.
 
-**NOTE: Two months ago during the course of this research AWS Labs came out with development code for “coldsnap” which does this. Downloadsnp also doesn't paginate.** The DownloadSnap code is still being made available as historical/example code. Good to see they also came out with it in a compilable language :smile: 
+**NOTE: Two months ago during the course of this research AWS Labs came out with development code for “coldsnap” which does this. Downloadsnap also doesn't paginate.** The DownloadSnap code is still being made available as historical/example code. Good to see they also came out with it in a compilable language :smile: 
 
 ```
 $ ./downloadsnap -h
