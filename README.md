@@ -4,7 +4,7 @@
 
 Fun tools around the EBS Direct API. If you find this interesting, give it a star, repost the blog, etc so I know whether I should do more! I've yet to ask that of other stuff I've open sourced or blogged about.
 
-**All utilities have a release of latest for AMD64 Linux, Mac and Windows**
+**All utilities have a build of latest for AMD64 Linux, Mac and Windows under Github Actions.**
 
 ### Authentication
 
