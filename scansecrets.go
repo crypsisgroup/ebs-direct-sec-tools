@@ -2,8 +2,7 @@ package main
 
 import ( "fmt"
 "io"
-// todo: bring back for pages
-//"github.com/superhawk610/bar"
+"github.com/superhawk610/bar"
 "github.com/aws/aws-sdk-go/aws"
 "github.com/aws/aws-sdk-go/aws/session"
 "github.com/aws/aws-sdk-go/service/ebs"

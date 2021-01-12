@@ -10,6 +10,7 @@ import ( "fmt"
 "flag"
 "strings"
 "io/ioutil"
+"strconv"
 "regexp"
 )
 
@@ -201,9 +202,10 @@ func process_snapshot(snapid string, secondsnapid string, wantsbar bool, region 
             return true
         })
     fmt.Println("Pages available: "+strconv.Itoa(pages))  
-    // Example sending a request using the ListChangedBlocksRequest method.
     activePage := 0 
-    err := ebssvc.ListChangedBlocksPages(params, 
+
+    // Example sending a request using the ListChangedBlocksRequest method.
+    changepageserr := ebssvc.ListChangedBlocksPages(params, 
     func(page *ebs.ListChangedBlocksOutput, lastPage bool) bool {   
         activePage++    
         fmt.Println("Pages available: "+strconv.Itoa(activePage))  
@@ -232,7 +234,7 @@ func process_snapshot(snapid string, secondsnapid string, wantsbar bool, region 
         fmt.Println("\n\nFinished snapshot differential"+strconv.Itoa(activePage))
         return true
     })
-    if err != nil {
+    if changepageserr != nil {
         fmt.Println("Error listing block differential: "+err.Error())
         os.Exit(1)
     }
