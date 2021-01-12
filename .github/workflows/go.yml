@@ -1,0 +1,50 @@
+name: Go
+# Augmented from internal Gitlab CI/CD, sorry if imperfect
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: 1.15
+        
+    - name: Mkdir artifacts directory
+      run: mkdir -p artifacts
+
+    - name: Get bar 
+      run: go get github.com/superhawk610/bar
+    
+    - name: Get AWS
+      run: go get github.com/aws/aws-sdk-go/aws
+    
+    - name: Get AWS Session
+      run: go get github.com/aws/aws-sdk-go/aws/session
+      
+    - name: Get TTY depends
+      run: go get github.com/mattn/go-isatty
+    
+    - name: Get EBS API
+      run: go get github.com/aws/aws-sdk-go/service/ebs
+  
+    - name: Get EC2 API
+      run: go get github.com/aws/aws-sdk-go/service/ec2
+    
+    - name: Build wrapper script
+      run: find . -name "*.go" |xargs -I% bash build.sh %
+    
+    - name: Upload a build artifact
+      uses: actions/upload-artifact@v2.2.1
+      with:
+        name: Automatic build
+        path: artifacts  
+    
