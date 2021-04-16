@@ -8,7 +8,9 @@ Fun tools around the EBS Direct API. If you find this interesting, give it a sta
 
 ### Authentication
 
-Use native authentication. Use ~/.aws/credentials, environment variables, etc.
+Use native authentication. 
+
+Use ~/.aws/credentials, environment variables, etc.
 
 ### Todo/Wishlist
 
